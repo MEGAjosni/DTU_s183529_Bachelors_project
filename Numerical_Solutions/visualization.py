@@ -9,7 +9,7 @@ def displayGeodesicCirclesInDomain(Circs, filename=""):
 
     plt.gca().set_aspect('equal', adjustable='box')
     if len(filename) > 0:
-        plt.savefig(filename + '.svg', format='svg')
+        plt.savefig('graphix/' + filename + '.svg', format='svg')
     plt.show()
     
     
