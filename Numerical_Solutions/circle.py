@@ -1,10 +1,11 @@
 from compute_geodesic_circle import geodesicCircle
 from polygon_intersect import intersection
+import numpy as np
 
 class circle:
     
     def __init__(self, P, r, ODEsys, G):
-        self.P = P;
+        self.P = np.array(P);
         self.r = r;
         self.coords = geodesicCircle(P, r, ODEsys, G);
     

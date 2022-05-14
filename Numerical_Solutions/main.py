@@ -6,7 +6,7 @@ os.chdir(dname)
 from compute_geodesic_circle import geodesicCircle
 from packing_routines import packOnSurface
 from circle import circle, tangentPairs
-from visualization import displayGeodesicCirclesInDomain, displayGeodesicCirclesOnSurface
+from visualization import displayGeodesicCirclesInDomain, displayGeodesicCirclesOnSurface, projectIntoPlane
 from numpy import pi
 import matplotlib.pyplot as plt
 
@@ -21,24 +21,25 @@ Circs = [
 
 CTaC = tangentPairs(Circs, torusODEsystem, torusG)
 
-packOnSurface(Circs, CTaC, ODEsys=torusODEsystem, G=torusG, maxit=10)
+packOnSurface(Circs, CTaC, r_min=pi/36, r_max=pi/12, ODEsys=torusODEsystem, G=torusG)
 
-displayGeodesicCirclesInDomain(Circs)
+displayGeodesicCirclesInDomain(Circs, filename="torus_geodesic_packing")
+projectIntoPlane(Circs, torusR, filename="torus_projected")
 displayGeodesicCirclesOnSurface(Circs, torusR)
-
 
 # %% Sphere
 from surfaces import sphereR, sphereODEsystem, sphereG
 
 # Initial circles
 Circs = [
-    circle([0,pi/2], pi/18, sphereODEsystem, sphereG),
-    circle([pi/9, pi/2], pi/18, sphereODEsystem, sphereG),
+    circle([0,pi/2], pi/12, sphereODEsystem, sphereG),
+    circle([pi/6, pi/2], pi/12, sphereODEsystem, sphereG),
 ];
 
 CTaC = tangentPairs(Circs, sphereODEsystem, sphereG)
 
-packOnSurface(Circs, CTaC, u_range=[-pi, pi], v_range=[0, pi], r_min=pi/36, r_max=pi/18, ODEsys=sphereODEsystem, G=sphereG, maxit=10)
+packOnSurface(Circs, CTaC, u_range=[-pi, pi], v_range=[0, pi], r_min=pi/36, r_max=pi/12, ODEsys=sphereODEsystem, G=sphereG)
 
-displayGeodesicCirclesInDomain(Circs)
+displayGeodesicCirclesInDomain(Circs, filename="sphere_geodesic_packing")
+projectIntoPlane(Circs, sphereR, filename="sphere_projected")
 displayGeodesicCirclesOnSurface(Circs, sphereR)

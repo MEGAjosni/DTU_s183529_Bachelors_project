@@ -105,7 +105,6 @@ def ShowCircles(Circs, fileName=False):
     
     # Display circles
     for i, C in enumerate(Circs):
-        plt.text(C.x, C.y, i, size=C.r, ha='center', va='center')
         circ = C.show();
         ax.add_artist(circ);
     
@@ -123,7 +122,7 @@ def ShowCircles(Circs, fileName=False):
     
     # Save and display plot
     if fileName:
-        plt.savefig(fileName + '.svg', format='svg')
+        plt.savefig('.svg', format='svg')
         tikzplotlib.save('frontimg.tex')
     plt.show();
     

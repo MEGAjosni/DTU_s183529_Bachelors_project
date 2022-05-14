@@ -14,29 +14,92 @@ from packing_routines import InitialTangent, SimplePacking, SimplePackingSphere
 from domains import OpenDomain, InBall, InBox, InBinary
 from circle import circle, ShowCircles, ShowCirclesOnSphere
 
-# %% Circle
+# %% Fixed circle size in rectangular domain
 
 tol = 1e-4;
+r = 0.15
 
 # Initial circles
 Circs = [
-    circle(0.1, 0, 0.1),
-    circle(0.1, 0, -0.1),
+    circle(r, 0, r),
+    circle(r, 0, -r),
+];
+
+CTaC = InitialTangent(Circs);
+SimplePacking(Circs, CTaC, InBox, t_min = r, t_max = r, tol=tol)
+
+ShowCircles(Circs, 'fixed_size_inbox')
+
+# %% Variable size in rectangular domain
+
+tol = 1e-4;
+r = 0.15
+
+# Initial circles
+Circs = [
+    circle(r, 0, r),
+    circle(r, 0, -r),
+];
+
+CTaC = InitialTangent(Circs);
+SimplePacking(Circs, CTaC, InBox, t_min = r/15, t_max = r, tol=tol)
+
+ShowCircles(Circs, 'variable_size_inbox')
+
+# %% Variable size in circular domain
+
+tol = 1e-4;
+r = 0.15
+
+# Initial circles
+Circs = [
+    circle(r, 0, r),
+    circle(r, 0, -r),
+];
+
+CTaC = InitialTangent(Circs);
+SimplePacking(Circs, CTaC, InBall, t_min = r/15, t_max = r, tol=tol)
+
+ShowCircles(Circs, 'variable_size_inball')
+
+# %% Different initial size in circular domain
+
+tol = 1e-4;
+r = 0.15
+
+# Initial circles
+Circs = [
+    circle(r/2, 0, r/2),
+    circle(r, 0, -r),
+];
+
+CTaC = InitialTangent(Circs);
+SimplePacking(Circs, CTaC, InBall, t_min = r/15, t_max = r, tol=tol)
+
+ShowCircles(Circs, 'diff_ini_size_inball')
+
+
+# %% Obstacles  in circular domain
+
+tol = 1e-4;
+r = 0.15
+
+# Initial circles
+Circs = [
+    circle(2*r, 2*r, 2*r),
+    circle(r/2, 0, r/2),
+    circle(r/2, 0, -r/2),
 ];
 
 CTaC = InitialTangent(Circs);
 
 print(CTaC)
 
-SimplePacking(Circs, CTaC, InBall, t_min = 0.01, t_max = 0.5, tol=tol, max_it=1000)
+SimplePacking(Circs, CTaC, InBall, t_min = r/15, t_max = r, tol=tol)
 
-domainC = circle(5, 0, 0);
-Circs.append(domainC)
+ShowCircles(Circs, 'obstacles_inball')
 
-ShowCircles(Circs, 'ball')
-
-
-# %% Binary
+# %% Binary DTU
 
 tol = 1e-4;
 
@@ -54,7 +117,26 @@ print(CTaC)
 
 SimplePacking(Circs, CTaC, InBinary, t_min = 0.5, t_max = 5, tol=tol)
 
-ShowCircles(Circs, 'binary')
+ShowCircles(Circs, 'dtu_logo')
+
+# %% Binary dino
+
+tol = 1e-4;
+
+# Initial circles
+Circs = [
+    circle(5, 5, 5),
+    circle(5, 5, 15),
+];
+
+CTaC = InitialTangent(Circs);
+
+print(CTaC)
+
+SimplePacking(Circs, CTaC, InBinary, t_min = 0.5, t_max = 5, tol=tol)
+
+ShowCircles(Circs, 'dino2')
+
 
 
 # %% Circles on sphere

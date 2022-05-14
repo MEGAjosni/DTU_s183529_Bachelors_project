@@ -5,11 +5,12 @@ from plotly.subplots import make_subplots
 
 def displayGeodesicCirclesInDomain(Circs, filename=""):
     for C in Circs:
-        plt.plot(C.coords[:, 0], C.coords[:, 1], color='b')
+        plt.plot(C.coords[:, 0], C.coords[:, 1], color='black', lw=0.2)
 
     plt.gca().set_aspect('equal', adjustable='box')
+    plt.axis('off');
     if len(filename) > 0:
-        plt.savefig('graphix/' + filename + '.svg', format='svg')
+        plt.savefig('graphix/' + filename + '.svg', format='svg', bbox_inches="tight")
     plt.show()
     
     
@@ -23,7 +24,14 @@ def displayGeodesicCirclesOnSurface(Circs, parametrization):
 
     x, y, z = parametrization(u,v)
 
-    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False))
+    colorscale=[[1.0, "rgb(0,0,0)"],
+                [0.0, "rgb(255,255,255)"],
+                [-1.0, "rgb(0,0,0)"],
+                ]
+    
+    colors = np.zeros(shape=x.shape) 
+    
+    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=True, surfacecolor=colors, colorscale='RdBu', lighting=dict(ambient=.5)))
 
     # Plot circles on surface
     for C in Circs:
@@ -35,5 +43,26 @@ def displayGeodesicCirclesOnSurface(Circs, parametrization):
         
         fig.add_trace(go.Scatter3d(x=x, y=y,z=z, mode='lines', line_color='black'))
 
-
+    fig.update_scenes(xaxis_visible=False, yaxis_visible=False, zaxis_visible=False)
+    
     fig.show(renderer="browser")
+    
+
+def projectIntoPlane(Circs, parametrization, filename=""):
+    
+    for C in Circs:
+        u = C.coords[:, 0];
+        v = C.coords[:, 1];
+        
+        x, y, z = parametrization(u, v)
+        
+        above_plane = z>0
+        plt.plot(x[above_plane], y[above_plane], color='black', lw=0.2)
+    
+    plt.axis('off');
+    plt.gca().set_aspect('equal', adjustable='box')
+    if len(filename) > 0:
+        plt.savefig('graphix/' + filename + '.svg', format='svg', bbox_inches="tight")
+    plt.show()
+    
+    

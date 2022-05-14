@@ -6,7 +6,11 @@ from math import inf
 
 
 def packOnSurface(Circs, CTaC, r_min=pi/24, r_max=pi/12, N=100, u_range=[-pi, pi], v_range=[-pi, pi], maxit=inf, ODEsys=torusODEsystem, G=torusG):
-
+    
+    # Handle periodic domains
+    def InDomain(Cp):
+        return min(Cp.coords[:,0]) > u_range[0] and max(Cp.coords[:,0]) < u_range[1] and min(Cp.coords[:,1]) > v_range[0] and max(Cp.coords[:,1]) < v_range[1]
+            
     it = 0
     while CTaC and it < maxit:
         print("======================")
@@ -36,7 +40,7 @@ def packOnSurface(Circs, CTaC, r_min=pi/24, r_max=pi/12, N=100, u_range=[-pi, pi
             g[idx[0]], g[idx[1]] = False, False
             valid = not any(g)
             
-            if min(Cp.coords[:,0]) < u_range[0] or max(Cp.coords[:,0]) > u_range[1] or min(Cp.coords[:,1]) < v_range[0] or max(Cp.coords[:,1]) > v_range[1]:
+            if not InDomain(Cp):
                 valid = False;
             
             if not valid:
@@ -49,7 +53,7 @@ def packOnSurface(Circs, CTaC, r_min=pi/24, r_max=pi/12, N=100, u_range=[-pi, pi
                 g[idx[0]], g[idx[1]] = False, False
                 valid = not any(g)
                 
-                if min(Cp.coords[:,0]) < u_range[0] or max(Cp.coords[:,0]) > u_range[1] or min(Cp.coords[:,1]) < v_range[0] or max(Cp.coords[:,1]) > v_range[1]:
+                if not InDomain(Cp):
                     valid = False;
                     
                 # Converge circle
@@ -67,7 +71,7 @@ def packOnSurface(Circs, CTaC, r_min=pi/24, r_max=pi/12, N=100, u_range=[-pi, pi
                         g[idx[0]], g[idx[1]] = False, False
                         valid = not any(g)
                         
-                        if min(Cp.coords[:,0]) < u_range[0] or max(Cp.coords[:,0]) > u_range[1] or min(Cp.coords[:,1]) < v_range[0] or max(Cp.coords[:,1]) > v_range[1]:
+                        if not InDomain(Cp):
                             valid = False;
                         
                         if valid:
@@ -82,5 +86,7 @@ def packOnSurface(Circs, CTaC, r_min=pi/24, r_max=pi/12, N=100, u_range=[-pi, pi
                 if Cp.tangent(C, ODEsys, G):
                     CTaC.append([i, N])
             Circs.append(Cp)
+
+            
         
         it += 1;

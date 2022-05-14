@@ -127,8 +127,7 @@ def ShowCircles(Circs, fileName=False):
     
     # Save and display plot
     if fileName:
-        plt.savefig(fileName + '.svg', format='svg')
-        tikzplotlib.save('frontimg.tex')
+        plt.savefig("graphix/" + fileName + '.svg', format='svg', bbox_inches="tight")
     plt.show();
     
     
