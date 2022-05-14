@@ -133,11 +133,8 @@ def ShowCircles(Circs, fileName=False):
     
 def ShowCirclesOnSphere(Circs):
     
-    from mpl_toolkits import mplot3d
     import numpy as np
-    import matplotlib.pyplot as plt
     import plotly.graph_objects as go
-    import plotly.express as px
     from plotly.subplots import make_subplots
     
     fig = make_subplots()
@@ -146,60 +143,26 @@ def ShowCirclesOnSphere(Circs):
         
         x, y, z = C.StereographicProjection()
         
-        fig.add_trace(go.Scatter3d(x=x, y=y,z=z, mode='lines', line_color='white'))
+        fig.add_trace(go.Scatter3d(x=x, y=y,z=z, mode='lines', line_color='black'))
     
     # Plot sphere
-    r = 0.99
+    r = 1
 
     theta = np.linspace(0,2*np.pi,100)
     phi = np.linspace(0,np.pi,100)
 
-    x0 = r * np.outer(np.cos(theta),np.sin(phi))
-    y0 = r * np.outer(np.sin(theta),np.sin(phi))
-    z0 = r * np.outer(np.ones(100),np.cos(phi))
+    x = r * np.outer(np.cos(theta),np.sin(phi))
+    y = r * np.outer(np.sin(theta),np.sin(phi))
+    z = r * np.outer(np.ones(100),np.cos(phi))
     
-    fig.add_trace(go.Surface(x=x0, y=y0, z=z0, surfacecolor=0*(x**2 + y**2 + z**2)))
+    colors = np.zeros(shape=x.shape) 
+    
+    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False, surfacecolor=colors, colorscale='RdBu', lighting=dict(ambient=.5)))
+    fig.update_scenes(xaxis_visible=False, yaxis_visible=False, zaxis_visible=False)
     
     fig.show(renderer="browser")
-        
     
-    
-    fig = plt.figure()
-    ax = plt.axes(projection='3d')
-    ax.plot_surface(x0, y0, z0, color='w')
-    for C in Circs:
-        
-        x, y, z = C.StereographicProjection()
-        
-        ax.plot3D(x, y, z, 'maroon')
-    
-    plt.show()
 
-
-
-
-
-    
-    
-class geodesic:
-    
-    def __init__(self, r, x, y, z):
-        self.r = r;
-        self.x = x;
-        self.y = y;
-        self.z = z;
-        
-    def overlapping(self, C, tol = 1e-4):
-        d = sqrt((self.x - C.x)**2 + (self.y - C.y)**2);
-        return d < self.r + C.r - tol;
-        
-    def tangent(self, C, tol = 1e-4):
-        R = sqrt(self.x**2 + self.y**2 + self.z**2); # Radii of sphere
-        
-        
-        d = sqrt((self.x - C.x)**2 + (self.y - C.y)**2);
-        return abs(d - (self.r + C.r)) <= tol;
-    
     
     
     

@@ -10,8 +10,9 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+from numpy import pi
 from packing_routines import InitialTangent, SimplePacking, SimplePackingSphere
-from domains import OpenDomain, InBall, InBox, InBinary
+from domains import InBall, InBox, InBinary, InBallSphere
 from circle import circle, ShowCircles, ShowCirclesOnSphere
 
 # %% Fixed circle size in rectangular domain
@@ -93,8 +94,6 @@ Circs = [
 
 CTaC = InitialTangent(Circs);
 
-print(CTaC)
-
 SimplePacking(Circs, CTaC, InBall, t_min = r/15, t_max = r, tol=tol)
 
 ShowCircles(Circs, 'obstacles_inball')
@@ -113,8 +112,6 @@ Circs = [
 
 CTaC = InitialTangent(Circs);
 
-print(CTaC)
-
 SimplePacking(Circs, CTaC, InBinary, t_min = 0.5, t_max = 5, tol=tol)
 
 ShowCircles(Circs, 'dtu_logo')
@@ -131,84 +128,48 @@ Circs = [
 
 CTaC = InitialTangent(Circs);
 
-print(CTaC)
-
 SimplePacking(Circs, CTaC, InBinary, t_min = 0.5, t_max = 5, tol=tol)
 
 ShowCircles(Circs, 'dino2')
 
-
-
-# %% Circles on sphere
+# %% Fixed circles on sphere
 
 tol = 1e-4;
 
 # Initial circles
 Circs = [
-    circle(0.05, 0, 0.05),
-    circle(0.05, 0, -0.05),
+    circle(pi/24, 0, pi/24),
+    circle(pi/24, 0, -pi/24),
 ];
 
 CTaC = InitialTangent(Circs);
 
-print(CTaC)
+SimplePackingSphere(Circs, CTaC, InBallSphere, r_min = pi/12, r_max = pi/12, tol=tol)
 
-SimplePackingSphere(Circs, CTaC, InBall, r_min = 0.1, r_max = 0.1, tol=tol)
-
-domainC = circle(20, 0, 0);
+domainC = circle(7.5, 0, 0);
 Circs.append(domainC)
 
-ShowCircles(Circs, 'ball')
+ShowCircles(Circs, 'fixed_sphere_stereographic')
 
 ShowCirclesOnSphere(Circs)
 
-# %% Rectangle
-
-#SimplePacking(Circs, CTaC, InRectangle, r_min = 0.2, r_max = 2)
+# %% Variable circles on sphere
 
 tol = 1e-4;
 
 # Initial circles
 Circs = [
-    circle(3, 3, 3),
-    circle(3, -3, 3),
-    circle(3, -3, -3),
-    circle(3, 3, -3),
+    circle(pi/24, 0, pi/24),
+    circle(pi/24, 0, -pi/24),
 ];
 
 CTaC = InitialTangent(Circs);
 
-SimplePacking(Circs, CTaC, InBox, t_min = 0.05, t_max = 2, tol=tol)
+SimplePackingSphere(Circs, CTaC, InBallSphere, r_min =pi/36, r_max = pi/12, tol=tol)
 
-ShowCircles(Circs, 'box')
+domainC = circle(7.5, 0, 0);
+Circs.append(domainC)
 
-# %% Open domain
+ShowCircles(Circs, 'variable_sphere_stereographic')
 
-#SimplePacking(Circs, CTaC, InRectangle, r_min = 0.2, r_max = 2)
-
-tol = 1e-4;
-
-# Initial circles
-Circs = [
-    circle(1, 0, 1),
-    circle(1, 0, -1),
-];
-
-CTaC = InitialTangent(Circs);
-
-SimplePacking(Circs, CTaC, OpenDomain, r_min = 0.05, r_max = 1, tol=tol, max_it=1000)
-
-ShowCircles(Circs, 'open')
-
-
-
-
-
-
-
-
-
-
-
-
-
+ShowCirclesOnSphere(Circs)

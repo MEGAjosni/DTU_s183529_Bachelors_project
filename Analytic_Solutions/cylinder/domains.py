@@ -29,10 +29,9 @@ def InBox(C):
 
     """
     
-    x_range = [0, 2*pi];
-    y_range = [0, 2*pi];
+    y_range = [0, pi];
     
-    return C.x-C.r >= x_range[0] and C.x+C.r <= x_range[1] and C.y-C.r >= y_range[0] and C.y+C.r <= y_range[1] 
+    return C.y-C.r >= y_range[0] and C.y+C.r <= y_range[1] 
 
 
 

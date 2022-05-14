@@ -61,3 +61,34 @@ def sphereG(P, R1=1, R2=0.5):
             ]
         )
     return G
+
+'''
+##############################
+##### >>>>> Cosine <<<<< #####
+##############################
+'''
+def quadraticR(u, v):
+    return u, v, - u**2 - v**2
+
+def quadraticODEsystem(t, y):
+    u, v, du, dv = y
+    
+    dydt = [
+            du,
+            dv,
+            - (4*u*(du**2 + dv**2)) / (4*u**2 + 4*v**2 + 1),
+            - (4*v*(du**2 + dv**2)) / (4*u**2 + 4*v**2 + 1)
+        ]
+    dydt = np.array(dydt)
+    
+    
+    return dydt
+
+def quadraticG(P, R1=1, R2=0.5):
+    G = np.array(
+        [
+            [4*P[0]**2 + 1, 4*P[0]*P[1]],
+            [4*P[0]*P[1], 4*P[1]**2 + 1]
+            ]
+        )
+    return G

@@ -95,7 +95,7 @@ class circle:
         print("r = {}, center = [{}, {}].".format(self.r, self.x, self.y));
 
 
-def ShowCircles(Circs, fileName=False):
+def ShowCircles(Circs, fileName=""):
 
     import matplotlib.pyplot as plt
     
@@ -121,9 +121,8 @@ def ShowCircles(Circs, fileName=False):
     plt.axis('off');
     
     # Save and display plot
-    if fileName:
-        plt.savefig('.svg', format='svg')
-        tikzplotlib.save('frontimg.tex')
+    if len(fileName) > 0:
+        plt.savefig(fileName + '.svg', format='svg', bbox_inches="tight")
     plt.show();
     
     
@@ -136,7 +135,8 @@ def ShowCirclesOnCylinder(Circs):
     fig = make_subplots()
     
     fig.update_layout(scene_aspectmode='manual',
-                  scene_aspectratio=dict(x=1, y=1, z=3))
+                  scene_aspectratio=dict(x=1, y=1, z=1.5))
+    
     
     def r(phi, z):
         return np.cos(phi), np.sin(phi), z
@@ -165,9 +165,11 @@ def ShowCirclesOnCylinder(Circs):
         return x, y, z
     
     
-    x, y, z = cylinder(1, 2*np.pi)
+    x, y, z = cylinder(1, np.pi)
     
-    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False))
-
+    colors = np.zeros(shape=x.shape) 
+    
+    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False, surfacecolor=colors, colorscale='RdBu', lighting=dict(ambient=.5)))
+    fig.update_scenes(xaxis_visible=False, yaxis_visible=False, zaxis_visible=False)
     fig.show(renderer="browser")
 

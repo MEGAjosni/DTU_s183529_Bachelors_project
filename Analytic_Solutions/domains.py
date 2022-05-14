@@ -67,7 +67,37 @@ def InBall(C):
     from numpy.linalg import norm
     
     return norm([domainC.x-C.x, domainC.y-C.y]) <= domainC.r-C.r
+
+
+def InBallSphere(C):
+    """
+    Desciption
+    ----------
+    Determining if an n-dimensional ball lies within an n-dimensional ball.
+
+    Parameters
+    ----------
+    x : list
+        Ball center.
+    r : scalar
+        Ball radius
+    x0 : list
+        Domain ball center.
+    L : list
+        Domain ball radius.
+
+    Returns
+    -------
+    bool
+        True if ball is in domain, and false if not.
+
+    """
     
+    domainC = circle(7.5, 0, 0);
+    
+    from numpy.linalg import norm
+    
+    return norm([domainC.x-C.x, domainC.y-C.y]) <= domainC.r-C.r
     
 def InEllipsoid(x, x0, Ha):
     """

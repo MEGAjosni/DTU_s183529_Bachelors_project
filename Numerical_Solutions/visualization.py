@@ -14,21 +14,16 @@ def displayGeodesicCirclesInDomain(Circs, filename=""):
     plt.show()
     
     
-def displayGeodesicCirclesOnSurface(Circs, parametrization):
+def displayGeodesicCirclesOnSurface(Circs, parametrization, u_range=[-np.pi, np.pi], v_range=[-np.pi, np.pi]):
     fig = make_subplots()
 
     # Plot surface
-    u = np.linspace(0, 2*np.pi, 100)
-    v = np.linspace(0, 2*np.pi, 100)
+    u = np.linspace(u_range[0], u_range[1], 100)
+    v = np.linspace(u_range[0], u_range[1], 100)
     u, v = np.meshgrid(u, v)
 
     x, y, z = parametrization(u,v)
 
-    colorscale=[[1.0, "rgb(0,0,0)"],
-                [0.0, "rgb(255,255,255)"],
-                [-1.0, "rgb(0,0,0)"],
-                ]
-    
     colors = np.zeros(shape=x.shape) 
     
     fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=True, surfacecolor=colors, colorscale='RdBu', lighting=dict(ambient=.5)))
@@ -44,7 +39,7 @@ def displayGeodesicCirclesOnSurface(Circs, parametrization):
         fig.add_trace(go.Scatter3d(x=x, y=y,z=z, mode='lines', line_color='black'))
 
     fig.update_scenes(xaxis_visible=False, yaxis_visible=False, zaxis_visible=False)
-    
+    fig['layout'].update(scene=dict(aspectmode="data"))
     fig.show(renderer="browser")
     
 
