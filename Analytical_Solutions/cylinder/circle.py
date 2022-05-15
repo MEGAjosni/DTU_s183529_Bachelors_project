@@ -105,7 +105,13 @@ def ShowCircles(Circs, fileName=""):
     
     # Display circles
     for i, C in enumerate(Circs):
-        circ = C.show();
+        if C.x < pi/2 or C.x > 3*pi/2:
+            color = 'blue'
+        else:
+            color = 'black'
+        
+        circ = plt.Circle((C.x, C.y), C.r, fill=False, lw=0.2, color=color);
+        
         ax.add_artist(circ);
     
     # Set axis range    
