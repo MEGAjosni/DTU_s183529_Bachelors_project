@@ -45,7 +45,7 @@ def projectIntoPlane(Circs, filename=""):
         x, y, z = np.cos(u), np.sin(u), v
         
         above_plane = x>0
-        plt.plot(y[above_plane], z[above_plane], color='black', lw=0.2)
+        plt.plot(z[above_plane], y[above_plane], color='black', lw=0.2)
     
     plt.axis('off');
     plt.gca().set_aspect('equal', adjustable='box')

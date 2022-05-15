@@ -138,7 +138,7 @@ def InBinary(C):
     import matplotlib.pyplot as plt
     import numpy as np
 
-    img = plt.imread('graphix/dino.png')[:, :, 0]
+    img = plt.imread('graphix/dtu.png')[:, :, 0]
     img = np.round(img)
     img = np.flip(img, axis=0)
     

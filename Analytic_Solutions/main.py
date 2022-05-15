@@ -138,13 +138,13 @@ tol = 1e-4;
 
 # Initial circles
 Circs = [
-    circle(pi/24, 0, pi/24),
-    circle(pi/24, 0, -pi/24),
+    circle(pi/128, 0, pi/128),
+    circle(pi/128, 0, -pi/128),
 ];
 
 CTaC = InitialTangent(Circs);
 
-SimplePackingSphere(Circs, CTaC, InBallSphere, r_min = pi/12, r_max = pi/12, tol=tol)
+SimplePackingSphere(Circs, CTaC, InBallSphere, r_min = pi/64, r_max = pi/64, tol=tol)
 
 domainC = circle(7.5, 0, 0);
 Circs.append(domainC)
