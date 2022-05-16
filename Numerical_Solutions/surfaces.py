@@ -1,14 +1,27 @@
+'''
+Written by
+----------
+    Author:     Jonas Søeborg Nielsen
+    Date:       May 16, 2022
+
+Description
+-----------
+    Parametrization, geodesic equation and metric tensor for selected surfaces.
+'''
+
 import numpy as np
-from numpy import cos, sin, tan, sqrt, pi
+from numpy import cos, sin, tan
 
 '''
 #############################
 ##### >>>>> Torus <<<<< #####
 #############################
 '''
+# Torus parametrization
 def torusR(u, v, r1=1, r2=1/2): 
     return (r1 + r2*np.cos(v))*np.cos(u), (r1 + r2*np.cos(v))*np.sin(u), r2*np.sin(v)
 
+# Torus geodesic equations
 def torusODEsystem(t, y, R1=1, R2=0.5):
     u, v, du, dv = y
     
@@ -22,6 +35,7 @@ def torusODEsystem(t, y, R1=1, R2=0.5):
     
     return dydt
 
+# Torus metric tensor
 def torusG(P, R1=1, R2=0.5):
     G = np.array(
         [
@@ -36,9 +50,11 @@ def torusG(P, R1=1, R2=0.5):
 ##### >>>>> Sphere <<<<< #####
 ##############################
 '''
+# Sphere parametrization
 def sphereR(u, v):
     return np.cos(u)*np.sin(v), np.sin(u)*np.sin(v), np.cos(v)
 
+# Sphere geodesic equations
 def sphereODEsystem(t, y):
     u, v, du, dv = y
     
@@ -53,6 +69,7 @@ def sphereODEsystem(t, y):
     
     return dydt
 
+# Sphere metric tensor
 def sphereG(P, R1=1, R2=0.5):
     G = np.array(
         [
@@ -67,9 +84,11 @@ def sphereG(P, R1=1, R2=0.5):
 ##### >>>>> Cosine <<<<< #####
 ##############################
 '''
+# Quadratic surface parametrization
 def quadraticR(u, v):
     return u, v, - u**2 - v**2
 
+# Quadratic surface geodesic equations
 def quadraticODEsystem(t, y):
     u, v, du, dv = y
     
@@ -84,6 +103,7 @@ def quadraticODEsystem(t, y):
     
     return dydt
 
+# Quadratic metric tensor
 def quadraticG(P, R1=1, R2=0.5):
     G = np.array(
         [

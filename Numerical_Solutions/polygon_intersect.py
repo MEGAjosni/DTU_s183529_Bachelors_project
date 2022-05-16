@@ -1,11 +1,21 @@
-import numpy as np
-"""
-Give, two x,y curves this gives intersection points,
-autor: Sukhbinder
-5 April 2017
-Based on: http://uk.mathworks.com/matlabcentral/fileexchange/11837-fast-and-robust-curve-intersections
-"""
+'''
+Original script written by
+--------------------------
+    Author:     Sukhbinder
+    Date:       April 5, 2017
+    Based on:   http://uk.mathworks.com/matlabcentral/fileexchange/11837-fast-and-robust-curve-intersections
 
+Modified by
+-----------
+    Author:     Jonas Søeborg Nielsen
+    Date:       May 16, 2022
+    
+Changes
+-------
+A bug making it likely to return dublicate solutions due to rounding errors has been fixed.
+'''
+
+import numpy as np
 
 def _rect_inter_inner(x1, x2):
     n1 = x1.shape[0]-1
@@ -34,11 +44,11 @@ def _rectangle_intersection_(x1, y1, x2, y2):
 
 def intersection(poly1, poly2):
     """
-INTERSECTIONS Intersections of curves.
-   Computes the (x,y) locations where two curves intersect.  The curves
-   can be broken with NaNs or have vertical segments.
-usage:
-x,y=intersection(x1,y1,x2,y2)
+    INTERSECTIONS Intersections of curves.
+       Computes the (x,y) locations where two curves intersect.  The curves
+       can be broken with NaNs or have vertical segments.
+    usage:
+    x,y=intersection(x1,y1,x2,y2)
     Example:
     a, b = 1, 2
     phi = np.linspace(3, 10, 100)

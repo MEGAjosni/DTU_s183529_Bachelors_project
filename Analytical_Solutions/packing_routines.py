@@ -1,22 +1,45 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Feb  3 17:22:35 2022
+'''
+#######################################
+##### >>>>> Packing routine <<<<< #####
+#######################################
 
-@author: jonas
-"""
+Written by
+----------
+    Author:     Jonas Søeborg Nielsen
+    Date:       May 16, 2022
+'''
 
-import sys
-from circle import circle
-import numpy as np
+from circle import circle, tangentPairs
 from math import sqrt, inf
-import sympy as sym
 
-def SimplePacking(Circs, CTaC, InDomain, t_min=1, t_max=5, tol=1e-4, max_it=inf):
+def SimplePacking(Circs, InDomain, t_min=1, t_max=5, tol=1e-4, max_it=inf):
     '''
-    ##################################################
-    ############ >>>>> Run Algorithm <<<<< ###########
-    ##################################################
+    Description
+    -----------
+        Routine running the tangent circles pair algorithm.
+
+    Parameters
+    ----------
+    Circs : list
+        List of initial circles. Gets updated by routine with new circles.
+    InDomain : function
+        Function telling if circle is within domain.
+    t_min : float, optional
+        Lower bound on circle radius. The default is 1.
+    t_max : float, optional
+        Upper bound on circle radius. The default is 5.
+    tol : float, optional
+        Numeric error tolerance. The default is 1e-4.
+    maxit : int, optional
+        Upper limit on the number of iterations routine will run. The default is inf.
+
+    Returns
+    -------
+    None.
     '''
+    
+    # Find initial tangent pairs    
+    CTaC = tangentPairs(Circs);
     
     it = 0;
     while CTaC and it < max_it:
@@ -91,18 +114,8 @@ def SimplePacking(Circs, CTaC, InDomain, t_min=1, t_max=5, tol=1e-4, max_it=inf)
                             CTaC.append([i, N])
                     CTaC.append(idx)
                     Circs.append(Cp)
-    
-                
+      
     return
-
-
-def InitialTangent(Circs):
-    CTaC = [];
-    for i in range(len(Circs)):
-        for j in range(i+1, len(Circs)):
-            if Circs[i].tangent(Circs[j]):
-                CTaC.append([i, j])
-    return CTaC
 
 
 def R_On_Sphere(x, y, t):

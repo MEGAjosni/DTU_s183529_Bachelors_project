@@ -1,11 +1,41 @@
+'''
+####################################################
+##### >>>>> Approximate geodesic circles <<<<< #####
+####################################################
+
+Written by
+----------
+    Author:     Jonas Søeborg Nielsen
+    Date:       May 16, 2022
+'''
+
 from numpy import pi, cos, sin, sqrt, linspace, array
 
-'''
-################################################
-##### >>>>> Compute geodesic circles <<<<< #####
-################################################
-'''
 def geodesicCircle(P, r, ODEsys, G, N=100):
+    '''
+    Description
+    -----------
+        Function approximating a geodesic circle.
+
+    Parameters
+    ----------
+    P : list
+        Center coordinates.
+    r : float
+        Radius.
+    ODEsys : function
+        Object geodesic equation.
+    G : function
+        Metric tensor.
+    N : int, optional
+        Number of points in approximation. The default is 100.
+
+    Returns
+    -------
+    np.array
+        Coordinates of points in geodesic circle approximation.
+
+    '''
     
     # Import relevant packages
     from scipy.integrate import solve_ivp

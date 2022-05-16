@@ -1,25 +1,65 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 26 13:30:27 2022
+'''
+#############################################
+##### >>>>> Define circle objects <<<<< #####
+#############################################
 
-@author: jonas
-"""
+Written by
+----------
+    Author:     Jonas Søeborg Nielsen
+    Date:       May 16, 2022
+'''
 
-from math import sqrt, cos, sin, pi
+from math import sqrt, pi
 import matplotlib.pyplot as plt
 import numpy as np
-from sympy import symbols, Eq, solve
-import tikzplotlib
 
 
 class circle:
     
+    
     def __init__(self, r, x, y):
+        '''
+        Description
+        -----------
+            Constructer for circle class.
+
+        Parameters
+        ----------
+        r : float
+            Radius.
+        x : float
+            x-coordinate.
+        y : float
+            y-coordinate.
+
+        Returns
+        -------
+        None.
+
+        '''
+            
         self.x = x;
         self.y = y;
         self.r = r;
 
     def overlapping(self, C, tol=1e-4):
+        '''
+        Description
+        -----------
+            Method checking if object overlaps with another.
+
+        Parameters
+        ----------
+        C : circle
+            Another circle.
+
+        Returns
+        -------
+        boolean
+            True if self and C overlap.
+
+        '''
+        
         d = sqrt((self.x - C.x)**2 + (self.y - C.y)**2);
         return d < self.r + C.r - tol;
         
@@ -29,24 +69,27 @@ class circle:
 
     def intersection(self, C, t=0, tol=1e-4):
         '''
-        print(t)
-        self.describe()
-        C.describe()
+        Description
+        -----------
+            Method finding intersection points between circle objects.
+
+        Parameters
+        ----------
+        C : circle
+            Another circle.
         
-        x, y = symbols('x y', real=True);
-        
-        eq1 = Eq((x - self.x)**2 + (y - self.y)**2, (self.r + t)**2)
-        eq2 = Eq((x - C.x)**2 + (y - C.y)**2, (C.r + t)**2)
+        t : float
+            Radius increase.
+        tol : float, optional
+            Numerical error tolerance. The default is 1e-4.
 
-        sol = solve((eq1, eq2), (x, y), manual=True)
+        Returns
+        -------
+        list
+            List of intersection points.
 
-        print(sol)
-
-        sol = [list(map(float, s)) for s in sol]
-
-        return sol
-        
         '''
+
         d = sqrt((self.x - C.x)**2 + (self.y - C.y)**2);
         
         # Expand circle radii by t
@@ -69,7 +112,7 @@ class circle:
             A = 1/2*np.array([self.x + C.x, self.y + C.y]) + (r1**2 - r2**2)/(2*d**2) * np.array([C.x - self.x, C.y - self.y]);
             B = 1/2*(sqrt(2*(r1**2 + r2**2)/(d**2) - (r1**2 - r2**2)**2/(d**4) - 1)) * np.array([C.y - self.y, self.x - C.x]);
         except ValueError:
-            print("Warning! Circles does not intersect.")
+            print('Warning! Circles do not intersect.')
             return [None, None]
             
         p1 = A - B;
@@ -79,9 +122,31 @@ class circle:
         
 
     def show(self):
+        '''
+        Description
+        -----------
+            Plots itself
+
+        Returns
+        -------
+        plt object
+            Plot of circle.
+
+        '''
         return plt.Circle((self.x, self.y), self.r, fill=False, lw=0.2);
     
     def StereographicProjection(self):
+        '''
+        Description
+        -----------
+            Project circle onto unit sphere through the stereographic projection.
+
+        Returns
+        -------
+        np.array
+            Cartesian coordinates of circle on sphere.
+
+        '''
         
         theta = np.linspace(0, 2*pi, 100, endpoint=True)
         
@@ -96,71 +161,43 @@ class circle:
 
 
     def describe(self):
-        print("r = {}, center = [{}, {}].".format(self.r, self.x, self.y));
+        '''
+        Description
+        -----------
+            Make a circle present it fields.
 
+        Returns
+        -------
+        None
 
-def ShowCircles(Circs, fileName=False):
+        '''
+        print('r = {}, center = [{}, {}].'.format(self.r, self.x, self.y));
+        return
 
-    import matplotlib.pyplot as plt
-    
-    # Lets draw a circle
-    fig, ax = plt.subplots();
-    ax.set_aspect(1);
-    
-    # Display circles
-    for i, C in enumerate(Circs):
-        # plt.text(C.x, C.y, i, size=C.r, ha='center', va='center')
-        circ = C.show();
-        ax.add_artist(circ);
-    
-    # Set axis range    
-    x_lower = min([C.x - C.r for C in Circs]);
-    x_upper = max([C.x + C.r for C in Circs]);
-    
-    y_lower = min([C.y - C.r for C in Circs]);
-    y_upper = max([C.y + C.r for C in Circs]);
-    
-    plt.xlim([x_lower, x_upper]);
-    plt.ylim([y_lower, y_upper]);
-    
-    plt.axis('off');
-    
-    # Save and display plot
-    if fileName:
-        plt.savefig("graphix/" + fileName + '.svg', format='svg', bbox_inches="tight")
-    plt.show();
-    
-    
-def ShowCirclesOnSphere(Circs):
-    
-    import numpy as np
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
-    
-    fig = make_subplots()
-    
-    for C in Circs:
-        
-        x, y, z = C.StereographicProjection()
-        
-        fig.add_trace(go.Scatter3d(x=x, y=y,z=z, mode='lines', line_color='black'))
-    
-    # Plot sphere
-    r = 1
+def tangentPairs(Circs):
+    '''
+    Description
+    -----------
+        Function finding finding tangent circle pairs from list of circles.
 
-    theta = np.linspace(0,2*np.pi,100)
-    phi = np.linspace(0,np.pi,100)
+    Parameters
+    ----------
+    Circs : list
+        List of circle objects.
 
-    x = r * np.outer(np.cos(theta),np.sin(phi))
-    y = r * np.outer(np.sin(theta),np.sin(phi))
-    z = r * np.outer(np.ones(100),np.cos(phi))
+    Returns
+    -------
+    CTaC : list
+        ('C'ircle 'Ta'ngent 'C'ircle) List of tangent circle pairs.
+
+    '''
     
-    colors = np.zeros(shape=x.shape) 
-    
-    fig.add_trace(go.Surface(x=x, y=y, z=z, showscale=False, surfacecolor=colors, colorscale='RdBu', lighting=dict(ambient=.5)))
-    fig.update_scenes(xaxis_visible=False, yaxis_visible=False, zaxis_visible=False)
-    
-    fig.show(renderer="browser")
+    CTaC = [];
+    for i in range(len(Circs)):
+        for j in range(i+1, len(Circs)):
+            if Circs[i].tangent(Circs[j]):
+                CTaC.append([i, j])
+    return CTaC
     
 
     
